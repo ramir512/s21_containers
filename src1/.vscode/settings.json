@@ -77,6 +77,13 @@
         "vector": "cpp",
         "memory_resource": "cpp",
         "stop_token": "cpp",
-        "version": "cpp"
+        "version": "cpp",
+        "__tree": "cpp",
+        "any": "cpp",
+        "iomanip": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "variant": "cpp",
+        "cinttypes": "cpp"
     }
 }
