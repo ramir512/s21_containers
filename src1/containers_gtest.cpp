@@ -36,7 +36,24 @@ class ContainersTest : public ::testing::Test {
   // Class members declared here can be used by all tests in the test suite
 };
 // Tests that the Foo::Bar() method does Abc.
-
+TEST_F(ContainersTest, constructors_0) {
+    std::list<int> original(10);
+    s21::list<int> my(10);
+    auto my_iterator = my.begin();
+    for (auto i:original) {
+       EXPECT_EQ(i, *my_iterator);
+       my_iterator++;
+    }
+}
+TEST_F(ContainersTest, constructors_1) {
+    std::list<int> original({1, 2, 3, 4, 5});
+    s21::list<int> my({1, 2, 3, 4, 5});
+    auto my_iterator = my.begin();
+    for (auto i:original) {
+       EXPECT_EQ(i, *my_iterator);
+       my_iterator++;
+    }
+}
 TEST_F(ContainersTest, Size_0) {
     // Creating list from std library and inserting 3 values:
     std::list<int> original;
@@ -98,7 +115,33 @@ TEST_F(ContainersTest, ListErase_0) {
     auto my_iterator = my.begin();
     for (auto i:original) {
        EXPECT_EQ(i, *my_iterator);
-       std::cout << "HERE" << i << " " << *my_iterator << std::endl;
+       my_iterator++;
+    }
+}
+TEST_F(ContainersTest, PushPop_0) {
+    std::list<char> original;
+    original.push_back('a');
+    original.push_front('b');
+    original.push_back('c');
+    original.push_front('d');
+    s21::list<char> my;
+    my.push_back('a');
+    my.push_front('b');
+    my.push_back('c');
+    my.push_front('d');
+    auto original_iterator = original.begin();
+    auto my_iterator = my.begin();
+    for (auto i:original) {
+       EXPECT_EQ(i, *my_iterator);
+       my_iterator++;
+    }
+    original.pop_back();
+    original.pop_front();
+    my.pop_back();
+    my.pop_front();
+    my_iterator = my.begin();
+   for (auto i:original) {
+       EXPECT_EQ(i, *my_iterator);
        my_iterator++;
     }
 }

@@ -69,7 +69,7 @@ class list
     using pointer           = T*;
     using const_reference   = const T&;
     using iterator          = ListIterator<T>;
-    using const_iterator    = ListIterator<T>;
+    using const_iterator    = ListIterator<const T>;
     using size_type         = unsigned int;
     
     // private members:
@@ -77,28 +77,53 @@ class list
     ListNode<value_type> *_back;
     size_type _size;
     public:
-        list()
-        {
+        list() {
             _front = _back = new ListNode<value_type>;
             _size = 0;
         }
-        ~list()
-        {
+        ~list() {
             this -> clear();
             delete _back;
         }
-        list(size_type n)
-        {
-        
-            
+        list(size_type n) {
+            _front = _back = new ListNode<value_type>;
+            _size = 0;
+            while (n--) {
+                value_type node = value_type();
+                this -> push_back(node);
+            }
         }
-        iterator begin()
-        {
-            return iterator(_front);
+        list(std::initializer_list<value_type> const &items) {
+            _front = _back = new ListNode<value_type>;
+            _size = 0;
+            for (auto i:items) {
+                this -> push_back(i);
+            }
         }
 
-        iterator end()
-        {
+        list(const list &l) {
+            _front = _back = new ListNode<value_type>;
+            _size = 0;
+            for (auto i:l) {
+                this -> push_back(i);
+            }
+        }
+        list(list&& l) noexcept: _front(std::move(l.end())), _front(std::move(l.begin())), _size(std::move(l.size())) {
+            
+        }
+        list& operator=(list &&l) {
+            return *this;
+        }
+        iterator begin() {
+            return iterator(_front);
+        }
+        iterator begin() const{
+            return iterator(_front);
+        }
+        iterator end(){
+            return iterator(_back);
+        }
+        iterator end() const{
             return iterator(_back);
         }
 
@@ -144,6 +169,23 @@ class list
             }
             pos -> prev = node;
             return iterator(node);
+        }
+        void push_back(const_reference value) {
+            this -> insert(iterator(_back), value);
+        }
+        void push_front(const_reference value) {
+            this -> insert(iterator(_front), value);
+        }
+        void pop_back() {
+            this -> erase(--iterator(_back));
+        }
+        void pop_front() {
+            this -> erase(iterator(_front));
+        }
+        void swap(list& other) {
+            ListNode<T>* tmp_front = _front;
+            ListNode<T>* tmp_back = _back;
+            size_type tmp_size = _size;
         }
 };
 }
