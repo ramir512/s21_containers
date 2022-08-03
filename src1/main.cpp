@@ -5,16 +5,22 @@
 //using namespace std;
 
 int main() {
-    s21::list<int> a;
-    a.insert(a.begin(), 1);
-    a.insert(a.begin(), 2);
-    a.insert(a.begin(), 3);
-    std::cout << "try 2" << std::endl;
-
-    for (auto i:a) {
+    s21::list<char> my;
+    my.insert(my.begin(), 'a');
+    my.insert(my.begin(), 'b');
+    my.insert(my.begin(), 'd');
+    my.insert(my.begin(), 'c');
+    my.insert(my.end(), 'e');
+    auto my_iter = my.begin();
+    ++my_iter;
+    ++my_iter;
+    ++my_iter;
+    ++my_iter;
+    my.insert(my_iter, 'X');
+    my.clear();
+    for (auto i:my) {
         std::cout << i << " ";
     }
-    
 
     // s21::list<int> b;
     // b.insert(b.begin(), 1);
@@ -25,3 +31,8 @@ int main() {
     //     std::cout << i << std::endl;
     // }
 }
+
+
+// i've got 8 hours
+// ALL containers finish goal.
+// this hour (1:20 pm - 2:30 pm) - finish off list. 

@@ -31,9 +31,12 @@ struct ListIterator
     using value_type        = T;
     using pointer           = ListNode<T>*;  // or also value_type*
     using reference         = ListNode<T>&;  // or also value_type&
+
+
     // constructors
     ListIterator() {
     }
+
     ListIterator(pointer ptr) {
         _node = ptr;
     }
@@ -67,20 +70,22 @@ class list
     using const_reference   = const T&;
     using iterator          = ListIterator<T>;
     using const_iterator    = ListIterator<T>;
-    using size_type         = size_t;
+    using size_type         = unsigned int;
     
     // private members:
     ListNode<value_type> *_front;
     ListNode<value_type> *_back;
-
+    size_type _size;
     public:
         list()
         {
             _front = _back = new ListNode<value_type>;
+            _size = 0;
         }
         ~list()
         {
-            
+            this -> clear();
+            delete _back;
         }
         list(size_type n)
         {
@@ -97,7 +102,26 @@ class list
             return iterator(_back);
         }
 
+
+        // -------------------------------------------- CAPACITY --------------------------------------------------------
+        bool empty() {
+            return !(bool)_size;
+        }
+        size_type size() {
+            return _size;
+        }
+        size_type max_size() {
+            return 1000000000;
+        }
+
+        // -------------------------------------------- MODIFIERS --------------------------------------------------------
+        void clear() {
+            iterator i = this -> begin();
+            while (i._node != _back) {++i; delete i -> prev;}
+            _front = _back;
+        }
         void erase(iterator pos) {
+            _size--;
             //pos can be _front. In this case: ++pos -> prev = _front -> prev; delete _front;
             if (pos._node != _back) {pos -> next -> prev = pos -> prev;}
             if (pos != _front) {
@@ -107,17 +131,18 @@ class list
             //pos can be neither _back or _front ++pos -> prev = _front -> prev; --pos -> next = po -> next; delete pos;
         }
         iterator insert(iterator pos, const_reference value) {
+            ++_size;
             ListNode<value_type> *node = new ListNode<value_type>;
             node -> data = value;
             node -> next = pos._node;
             
             if (pos._node == _front) {
-                pos -> prev = node;
                 _front = node;
-            } else if (pos._node == _back) {
+            } else {
                 pos -> prev -> next = node;
-                pos -> prev = node;
+                node -> prev = pos -> prev;
             }
+            pos -> prev = node;
             return iterator(node);
         }
 };

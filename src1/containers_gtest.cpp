@@ -36,6 +36,20 @@ class ContainersTest : public ::testing::Test {
   // Class members declared here can be used by all tests in the test suite
 };
 // Tests that the Foo::Bar() method does Abc.
+
+TEST_F(ContainersTest, Size_0) {
+    // Creating list from std library and inserting 3 values:
+    std::list<int> original;
+    EXPECT_EQ(original.size(), 0);
+    EXPECT_EQ(original.empty(), 1);
+    original.insert(original.begin(), 3);
+    original.insert(original.begin(), 2);
+    original.insert(original.begin(), 1);
+    EXPECT_EQ(original.size(), 3);
+    original.erase(original.begin());
+    EXPECT_EQ(original.size(), 2);
+    EXPECT_EQ(original.empty(), 0);
+}
 TEST_F(ContainersTest, ListInsert_0) {
     // Creating list from std library and inserting 3 values:
     std::list<int> original;
@@ -62,11 +76,11 @@ TEST_F(ContainersTest, ListErase_0) {
     original.insert(++original.begin(), 'd');
     original.insert(original.begin(), 'c');
     original.insert(original.end(), 'e');
-    //original.insert(--original.end(), 'f');
+    original.insert(--original.end(), 'f');
     
-   //  original.erase(--original.end());
-   //  original.erase(original.begin());
-   //  original.erase(--original.end());
+    original.erase(--original.end());
+    original.erase(original.begin());
+    original.erase(--original.end());
     // Creating list from s21 namespace and inserting 3 values, identical to previous:
     s21::list<char> my;
     my.insert(my.begin(), 'a');
@@ -74,11 +88,11 @@ TEST_F(ContainersTest, ListErase_0) {
     my.insert(++my.begin(), 'd');
     my.insert(my.begin(), 'c');
     my.insert(my.end(), 'e');
-    //my.insert(--my.end(), 'f');
+    my.insert(--my.end(), 'f');
     
-   //  my.erase(--my.end());
-   //  my.erase(my.begin());
-   //  my.erase(--my.end());
+    my.erase(--my.end());
+    my.erase(my.begin());
+    my.erase(--my.end());
     // Expecting created lists from std and s21 namespaces to hold similar values:
     auto original_iterator = original.begin();
     auto my_iterator = my.begin();
