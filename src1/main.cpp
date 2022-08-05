@@ -8,15 +8,16 @@ int main() {
     
 
     s21::list<int> nmy({1, 2, 3, 4});
-
-    s21::list<int> my(nmy);
-    nmy.pop_back();
+    s21::list<int> my({5, 6, 7, 8});
+    my.swap(nmy);
+    
+    
+    for (auto i:nmy) {
+        std::cout << i << " ";
+    }
     for (auto i:my) {
         std::cout << i << " ";
     }
-    // for (auto i:nmy) {
-    //     std::cout << i << " ";
-    // }
 
     // s21::list<int> b;
     // b.insert(b.begin(), 1);

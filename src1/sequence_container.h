@@ -84,6 +84,7 @@ class list
         ~list() {
             this -> clear();
             delete _back;
+            _back = _front = nullptr;
         }
         list(size_type n) {
             _front = _back = new ListNode<value_type>;
@@ -107,11 +108,32 @@ class list
             for (auto i:l) {
                 this -> push_back(i);
             }
+            std::cout << "COPIED";
+            std::cout << _size;
         }
-        list(list&& l) noexcept: _front(std::move(l.end())), _front(std::move(l.begin())), _size(std::move(l.size())) {
-            
+        list(list&& l) {
+            std::cout << "MOVED";
+            _back = l._back;
+            _front = l._front;
+            _size = l._size;
+            l._front = nullptr;
+            l._back = nullptr;
+            l._size = 0;
+        }
+        list& operator=(const list &l) {
+            std::cout << std::endl << "assigned lvalue" << std::endl;
+            _front = _back = new ListNode<value_type>;
+            _size = 0;
+            for (auto i:l) {
+                this -> push_back(i);
+            }
+            return *this;
         }
         list& operator=(list &&l) {
+            std::cout << std::endl << "assigned rvalue" << std::endl;
+            _front = l._front;
+            _back = l._back;
+            _size = l._size;
             return *this;
         }
         iterator begin() {
@@ -183,9 +205,12 @@ class list
             this -> erase(iterator(_front));
         }
         void swap(list& other) {
-            ListNode<T>* tmp_front = _front;
-            ListNode<T>* tmp_back = _back;
-            size_type tmp_size = _size;
+            list tmp(other);
+            other = *this;
+            *this = tmp;
+        }
+        void merge(list& other) {
+            
         }
 };
 }
