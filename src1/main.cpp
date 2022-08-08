@@ -19,7 +19,7 @@ int main() {
     std::list<int> original_2({4, 5, 6});
     original_1.splice(original_1.begin(), original_2);
 
-
+     
     std::cout << "nmy here:";
     for (auto i:nmy) {
         std::cout << i << " ";
@@ -29,7 +29,12 @@ int main() {
         
         std::cout << i << " ";
     }
-
+    nmy.reverse();
+    std::cout << std::endl;
+    std::cout << "nmy here:";
+    for (auto i:nmy) {
+        std::cout << i << " ";
+    }
     // s21::list<int> b;
     // b.insert(b.begin(), 1);
     // b.insert(b.end(), 2);

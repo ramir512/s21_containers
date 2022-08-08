@@ -56,6 +56,11 @@ struct ListIterator
     ListIterator  operator--(int) { ListIterator tmp = *this; --(*this); return tmp; }
     friend bool operator== (const ListIterator& a, const ListIterator& b) { return a._node == b._node; };
     friend bool operator!= (const ListIterator& a, const ListIterator& b) { return a._node != b._node; };
+    
+
+
+    // int& b = const_cast<int&>(a);
+
 
     private:
         pointer _node;
@@ -236,10 +241,29 @@ class list
             if (pos != _front) {
                 pos -> prev -> next = other.begin()._node;
                 other.begin()._node -> prev = pos -> prev;
-            }
+            } else {_front = other._front;}
             (--other.end()) -> next = pos._node;
             pos -> prev = (--other.end())._node;
             other._front = other._back;
+        }
+        void reverse() {
+            iterator i = this -> begin();
+            while (i != this -> end()) {
+                std::cout << *i << std::endl;
+                ListNode<T> *tmp = i._node -> next;
+                i._node -> next = i._node -> prev;
+                i._node -> prev = tmp;
+                i--;
+            }
+            std::cout << "kekich" << std::endl;
+            _front -> next = _back;
+            _back -> next = nullptr;
+            ListNode<T> *tmp = _back -> prev;
+            _back -> prev = _front;
+            _front = tmp;
+        }
+        void unique() {
+
         }
 };
 }
