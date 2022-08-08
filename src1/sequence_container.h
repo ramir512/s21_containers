@@ -136,16 +136,16 @@ class list
             _size = l._size;
             return *this;
         }
+        const_iterator begin() const noexcept {
+            return const_cast<const_iterator>(const_iterator(_front));
+        }
+        const_iterator end() const noexcept{
+            return const_cast<const_iterator>(const_iterator(_back));
+        }
         iterator begin() {
             return iterator(_front);
         }
-        iterator begin() const{
-            return iterator(_front);
-        }
-        iterator end(){
-            return iterator(_back);
-        }
-        iterator end() const{
+        iterator end() {
             return iterator(_back);
         }
 
@@ -210,7 +210,36 @@ class list
             *this = tmp;
         }
         void merge(list& other) {
-            
+            iterator other_iterator = other.begin();
+            for (auto i = this -> begin(); i != this -> end(); i++) {
+                while (other_iterator != other.end() && *other_iterator < *i) {
+                    this -> insert(i, *other_iterator);
+                    other.erase(other_iterator);
+                    other_iterator = other.begin();
+                }
+            }
+            while(other.size() != 0) {
+                this -> insert(this -> end(), *(other.begin()));
+                other.erase(other.begin());
+            }
+        }
+        void splice(const_iterator pos, list& other) {
+            if (pos != _front) {
+                pos -> prev -> next = other.begin()._node;
+                other.begin()._node -> prev = pos -> prev;
+            }
+            (--other.end()) -> next = pos._node;
+            pos -> prev = --other.end();
+            other._front = other._back;
+        }
+        void splice(iterator pos, list& other) {
+            if (pos != _front) {
+                pos -> prev -> next = other.begin()._node;
+                other.begin()._node -> prev = pos -> prev;
+            }
+            (--other.end()) -> next = pos._node;
+            pos -> prev = (--other.end())._node;
+            other._front = other._back;
         }
 };
 }
