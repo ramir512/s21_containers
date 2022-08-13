@@ -74,7 +74,7 @@ class list
     using pointer           = T*;
     using const_reference   = const T&;
     using iterator          = ListIterator<T>;
-    using const_iterator    = ListIterator<const T>;
+    using const_iterator    = ListIterator<T>;
     using size_type         = unsigned int;
     
     // private members:
@@ -142,15 +142,15 @@ class list
             return *this;
         }
         const_iterator begin() const noexcept {
-            return const_cast<const_iterator>(const_iterator(_front));
+            return const_iterator(_front);
         }
         const_iterator end() const noexcept{
-            return const_cast<const_iterator>(const_iterator(_back));
+            return const_iterator(_back);
         }
-        iterator begin() {
+        iterator begin() noexcept{
             return iterator(_front);
         }
-        iterator end() {
+        iterator end() noexcept {
             return iterator(_back);
         }
 
@@ -228,15 +228,7 @@ class list
                 other.erase(other.begin());
             }
         }
-        void splice(const_iterator pos, list& other) {
-            if (pos != _front) {
-                pos -> prev -> next = other.begin()._node;
-                other.begin()._node -> prev = pos -> prev;
-            }
-            (--other.end()) -> next = pos._node;
-            pos -> prev = --other.end();
-            other._front = other._back;
-        }
+
         void splice(iterator pos, list& other) {
             if (pos != _front) {
                 pos -> prev -> next = other.begin()._node;
@@ -263,8 +255,41 @@ class list
             _front = tmp;
         }
         void unique() {
+            auto i = ++(this -> begin());
+            while (i != this -> end()) {
+                iterator tmp(i -> next);
+                if (*i == (i -> prev) -> data) {
+                    this -> erase(i);
+                }
+                i = tmp;
+            }
+        }
+        void sort() {
+            // if empty or size = 1, return itself
+            if (_size <= 1) {return;}
+
+            //split in two - first and second
+            list first;
+            list second;
+            int counter = 0;
+            for (auto i: *this) {
+                if (counter < _size/2) {
+                    first.push_back(i);
+                } else {
+                    second.push_back(i);
+                }
+                counter++;
+            }
+            //apply recursive sort for first and second
+            std::cout << "we are here" << std::endl;
+            first.sort();
+            second.sort();
+            //merge first and second
+            first.merge(second);
+            *this = first;
 
         }
+
 };
 }
 #endif
